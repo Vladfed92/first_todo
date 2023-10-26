@@ -7,13 +7,12 @@ function Post(props) {
   // додаємо хук зміни посту
   const [postEditing, setPostEditing] = useState()
   // додаємо хук зміни текста посту
-  const [editingText, setEditingText] = useState('')
-// функція визову циклу для зміни тексту поста згідно id
+  const [editingText, setEditingText] = useState(post.text)
+  // функція визову циклу для зміни тексту поста згідно id
   function editPost(id) {
     const updatedPosts = posts.map((post) => {
       return post.id === id ? { ...post, text: editingText } : { ...post }
     })
-    console.log(updatedPosts)
     setPosts(updatedPosts)
     setPostEditing()
     setEditingText('')
@@ -36,7 +35,15 @@ function Post(props) {
             onChange={(event) => setEditingText(event.target.value)}
             value={editingText}
           />
-          <button onClick={() => editPost(post.id)}>Submit editing</button>
+          <button
+            onClick={() =>
+              editingText.length > 0
+                ? editPost(post.id)
+                : alert('Type your editing text')
+            }
+          >
+            Submit editing
+          </button>
         </div>
       ) : (
         <div
@@ -60,6 +67,7 @@ function Post(props) {
               Done
             </button>
             <button
+              className={style.post_button}
               onClick={() => {
                 setPostEditing(post.id)
               }}
